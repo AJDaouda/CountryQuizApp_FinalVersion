@@ -11,8 +11,12 @@
     <!-- -->
     <!-- AlertDialog Buttons-->
     <string name="nextStep_text">Next Step</string>
+    <string name="delete_text">Delete Option</string>
     <string name="btn_save">SAVE</string>
     <string name="btn_ignore">IGNORE</string>
+
+    <string name="delAll">Delete all</string>
+    <string name="no">No</string>
 
     <!--
     <string name="_flag">   </string>

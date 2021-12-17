@@ -71,4 +71,13 @@ public class DatabaseManager {
             }
         });
     }
+
+    public void deleteAll(){
+        databaseExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                db.getAttemptDAO().deleteAll();
+            }
+        });
+    }
 }

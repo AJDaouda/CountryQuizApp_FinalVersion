@@ -17,6 +17,9 @@ public interface AttemptDAO {
    @Delete
    void deleteAttempt(Attempt attemptToDelete);
 
+    @Query("DELETE FROM Attempt")
+    void deleteAll();
+
     @Query("SELECT * FROM Attempt")
     List<Attempt> getAll();
 

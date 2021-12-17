@@ -1,10 +1,12 @@
 package com.example.countryquizapp.UI_and_Helpers;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +29,7 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
     //DatabaseManager dbManager = new DatabaseManager();
     DatabaseManager dbManager;
     AttemptReportAdapter adapter;
+    AlertDialog.Builder builder;
     ListView listOfAttempts;
     TextView numOfAttempts;
 
@@ -35,6 +38,7 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attempts_report);
 
+        builder = new AlertDialog.Builder(this);
         //Intent fromMain = getIntent();
         dbManager = ((myApp)getApplication()).getdbManager();
 
@@ -104,6 +108,33 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
 
 
     public void onClick(View view) {
+    showDeleteOption();
+    }
+
+    private void showDeleteOption(){
+        builder.setTitle(getResources().getString(R.string.delete_text));
+        builder.setMessage("Use this icon only if you want to delete all attempts"+
+                "\nTo delete one attempt at a time, click on the item in the list below and it will be erased");
+        builder.setPositiveButton(getResources().getString(R.string.delAll), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dbManager.deleteAll();
+                dbManager.getAllAttempts();
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(),"All attempts were delete",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"No change was made to your list of attempts",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        AlertDialog alertDialog=builder.create();
+        builder.show();
 
     }
 }
