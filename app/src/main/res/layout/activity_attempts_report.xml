@@ -20,7 +20,7 @@ tools:context=".UI_and_Helpers.AttemptsReportActivity">
     android:gravity="center"
     android:textSize="20dp" />
 
-<androidx.recyclerview.widget.RecyclerView
+<ListView
     android:id="@+id/list_of_attempts"
     android:layout_width="match_parent"
     android:background="@drawable/img_5288"

@@ -2,10 +2,14 @@ package com.example.countryquizapp.UI_and_Helpers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,12 +21,12 @@ import com.example.countryquizapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttemptsReportActivity extends AppCompatActivity implements DatabaseManager.DatabaseListener, AttemptListAdapter.ListClickListener{
+public class AttemptsReportActivity extends AppCompatActivity implements DatabaseManager.DatabaseListener{//,AttemptReportAdapter.ListClickListener
 
     ArrayList<Attempt> attemptListFromDB = new ArrayList<>(0) ;
     DatabaseManager dbManager = new DatabaseManager();
-    AttemptListAdapter adapter;
-    RecyclerView AttemptsRecyclerView;
+    AttemptReportAdapter adapter;
+    ListView listOfAttempts;
     TextView numOfAttempts;
 
     @Override
@@ -31,81 +35,35 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
         setContentView(R.layout.activity_attempts_report);
 
         //Intent fromMain = getIntent();
-        dbManager = ((myApp)getApplication()).getdbManager();
-        dbManager.listener = this;
-        dbManager.getAllAttempts();
+        //dbManager = ((myApp)getApplication()).getdbManager();
 
-        AttemptsRecyclerView = (RecyclerView) findViewById(R.id.list_of_attempts);
+        listOfAttempts = (ListView) findViewById(R.id.list_of_attempts);
         numOfAttempts = (TextView) findViewById(R.id.num_of_attempts);
-        AttemptsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new AttemptListAdapter(attemptListFromDB, this);
-        AttemptsRecyclerView.setAdapter(adapter);
-        adapter.listener = this;
+        dbManager.listener = this;
 
-        //AttemptsRecyclerView.setAdapter(adapter);
-
-
-       /* if(!(this.getIntent().getParcelableArrayListExtra("All attempts")==null)){
+        if(!(this.getIntent().getParcelableArrayListExtra("All attempts")==null)){
             attemptListFromDB = this.getIntent().getParcelableArrayListExtra("All attempts");
-            adapter = new AttemptReportAdapter(attemptListFromDB, this);
-            AttemptsRecyclerView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+            dbManager.getAllAttempts();
             System.out.println("My saved attempts is: \n"+ attemptListFromDB.toString());}
         else {
-
+            dbManager.getAllAttempts();
             //attemptListFromDB = this.getIntent().getParcelableArrayListExtra("All attempts");
             System.out.println("My saved attempts is: \n"+ attemptListFromDB);}
-       // dbManager.getAllAttempts();*/
 
-        /*
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.onChildViewAttachedToWindow(listOfAttempts);*/
+
+        listOfAttempts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dbManager.deleteAttempt(attemptListFromDB.get(position));
+                dbManager.getAllAttempts();
+                adapter.listOfAttempts.remove(position);
+                // we have to remove it from db as well
+                Toast.makeText(getApplicationContext(),"Attempt deleted",Toast.LENGTH_SHORT).show();
+                adapter.notifyDataSetChanged();
+            }
+        });
 
     }
-
-
-    @Override
-    public void databaseAllAttemptsListener(List<Attempt> list) {
-        attemptListFromDB = new ArrayList<>(list);
-        System.out.println("This is my db list:"+ attemptListFromDB);
-       // adapter = new AttemptReportAdapter(attemptListFromDB, this);
-        //AttemptsRecyclerView.setAdapter(adapter);
-        numOfAttempts.setText("The number of attempts is " + attemptListFromDB.size());
-        adapter.listOfAttempts = attemptListFromDB;
-        adapter.notifyDataSetChanged();
-    }
-
-
-
-    /*
-    // table view deleget
-    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.DOWN, ItemTouchHelper.LEFT |
-            ItemTouchHelper.RIGHT |
-            ItemTouchHelper.DOWN |
-            ItemTouchHelper.UP) {
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            Toast.makeText(CarActivity.this, "Item Moveing", Toast.LENGTH_SHORT).show();
-
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            //Remove swiped item from list and notify the RecyclerView
-            int position = viewHolder.getAdapterPosition();
-            dbService.deleteCar(OwnersCarsObject.cars.get(position));
-            dbService.getAllCarsForOwner(id);
-            adapter.carList.remove(position);
-            // we have to remove it from db as well
-
-            adapter.notifyDataSetChanged();
-
-        }
-    };
-*/
 
     @Override
     protected void onStart() {
@@ -127,14 +85,19 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("All attempts", attemptListFromDB);
-        System.out.println("my outstate array is: "+ attemptListFromDB.toString());
+    public void databaseAllAttemptsListener(List<Attempt> list) {
+        attemptListFromDB = new ArrayList<>(list);
+        System.out.println("This is my db list:"+ attemptListFromDB);
+        adapter= new AttemptReportAdapter(attemptListFromDB, this);
+        listOfAttempts.setAdapter(adapter);
+        numOfAttempts.setText("The number of attempts is " + attemptListFromDB.size());
     }
 
     @Override
-    public void onAttemptSelected(Attempt selectedAttempt) {
-
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("All attempts", attemptListFromDB);
     }
+
+
 }
