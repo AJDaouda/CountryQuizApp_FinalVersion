@@ -52,9 +52,10 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
             System.out.println("My saved attempts is: \n"+ attemptListFromDB);}
 
 
-        listOfAttempts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       listOfAttempts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 dbManager.deleteAttempt(attemptListFromDB.get(position));
                 dbManager.getAllAttempts();
                 adapter.listOfAttempts.remove(position);
@@ -101,4 +102,8 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
     }
 
 
+
+    public void onClick(View view) {
+
+    }
 }
