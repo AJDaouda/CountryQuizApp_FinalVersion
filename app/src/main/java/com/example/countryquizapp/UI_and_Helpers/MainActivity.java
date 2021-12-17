@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements NetworkService.Ne
     private void createCountriesWithFlag(){
         for (int i=0;i<=countrydata.size()-1;i++){
       // for (int i=0;i<countrydata1.size();i++){
-        countrydata1.get(i).setCountryName(countrydata1.get(i).getCountryName() + "   "+countryEmoji1.get(i)); }
+        countrydata.get(i).setCountryName(countrydata.get(i).getCountryName() + "   "+countryEmoji1.get(i)); }
     }
 
     private void createCountryEmoji(){
@@ -166,26 +166,6 @@ public class MainActivity extends AppCompatActivity implements NetworkService.Ne
         countryEmoji1.add(getResources().getString(R.string.zm_flag));
         countryEmoji1.add(getResources().getString(R.string.zw_flag)); }
 
-    // Showing the "top side menu" in the main activity
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater mInflater = getMenuInflater();
-        mInflater.inflate(R.menu.top_side_menu, menu);
-        return true;}
-
-    // Required actions when a menu item is selected
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        super.onOptionsItemSelected(item);
-        switch (item.getItemId()){
-            case R.id.menu_item_1:
-                toAttemptsReport();
-                Toast.makeText(this,"Quiz Report clicked",Toast.LENGTH_SHORT).show();
-
-                break;
-        }
-        return true;
-    }
 
     private void toAttemptsReport(){
         Intent toAttemptsReport = new Intent(getApplicationContext(),AttemptsReportActivity.class);

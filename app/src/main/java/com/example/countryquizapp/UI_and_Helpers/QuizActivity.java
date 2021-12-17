@@ -104,7 +104,7 @@ public class QuizActivity extends AppCompatActivity implements NetworkService.Ne
             countryName = selectedCountry.getCountryName().substring(0,selectedCountry.getCountryName().length()-6);
             System.out.println("My received country details are: \n"+ selectedCountry.toString());
         }
-        else if(!(this.getIntent().getExtras().get("Selected country details")==null)){
+        else{
             selectedCountry = (CountryDetails) this.getIntent().getExtras().get("Selected country details");
             countryName = selectedCountry.getCountryName().substring(0,selectedCountry.getCountryName().length()-6);
             System.out.println("My received country details are: \n"+ selectedCountry.toString());}
@@ -319,8 +319,9 @@ public class QuizActivity extends AppCompatActivity implements NetworkService.Ne
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(),"IGNORE clicked",Toast.LENGTH_SHORT).show();
+                BackToMainActivity();
                 index=0;
-                BackToMainActivity(); }
+            }
         });
         AlertDialog alertDialog=builder.create();
         builder.show();

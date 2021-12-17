@@ -24,7 +24,8 @@ import java.util.List;
 public class AttemptsReportActivity extends AppCompatActivity implements DatabaseManager.DatabaseListener{//,AttemptReportAdapter.ListClickListener
 
     ArrayList<Attempt> attemptListFromDB = new ArrayList<>(0) ;
-    DatabaseManager dbManager = new DatabaseManager();
+    //DatabaseManager dbManager = new DatabaseManager();
+    DatabaseManager dbManager;
     AttemptReportAdapter adapter;
     ListView listOfAttempts;
     TextView numOfAttempts;
@@ -35,7 +36,7 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
         setContentView(R.layout.activity_attempts_report);
 
         //Intent fromMain = getIntent();
-        //dbManager = ((myApp)getApplication()).getdbManager();
+        dbManager = ((myApp)getApplication()).getdbManager();
 
         listOfAttempts = (ListView) findViewById(R.id.list_of_attempts);
         numOfAttempts = (TextView) findViewById(R.id.num_of_attempts);
