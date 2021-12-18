@@ -28,7 +28,7 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
     ArrayList<Attempt> attemptListFromDB = new ArrayList<>(0) ;
     //DatabaseManager dbManager = new DatabaseManager();
     DatabaseManager dbManager;
-    AttemptReportAdapter adapter;
+    AttemptListAdapter adapter;
     AlertDialog.Builder builder;
     ListView listOfAttempts;
     TextView numOfAttempts;
@@ -94,7 +94,7 @@ public class AttemptsReportActivity extends AppCompatActivity implements Databas
     public void databaseAllAttemptsListener(List<Attempt> list) {
         attemptListFromDB = new ArrayList<>(list);
         System.out.println("This is my db list:"+ attemptListFromDB);
-        adapter= new AttemptReportAdapter(attemptListFromDB, this);
+        adapter= new AttemptListAdapter(attemptListFromDB, this);
         listOfAttempts.setAdapter(adapter);
         numOfAttempts.setText("The number of attempts is " + attemptListFromDB.size());
     }

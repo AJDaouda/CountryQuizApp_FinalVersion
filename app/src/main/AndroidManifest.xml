@@ -14,9 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CountryQuizApp">
         <activity
-            android:name=".UI_and_Helpers.TestActivity"
-            android:exported="false" />
-        <activity
             android:name=".UI_and_Helpers.QuizActivity"
             android:exported="true">
             <meta-data
